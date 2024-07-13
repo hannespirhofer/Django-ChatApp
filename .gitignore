@@ -9,6 +9,8 @@ notes/
 __pycache__
 db.sqlite3
 media
+**/migrations/*
+!**/migrations/__init__.py
 
 # Backup files #
 *.bak
