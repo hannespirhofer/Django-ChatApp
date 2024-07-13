@@ -16,8 +16,18 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.conf import settings
+from django.urls import path, include
+from chat.views import index as helloworld
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("chat/", helloworld),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns = [
+        path("__debug__/", include(debug_toolbar.urls)),
+    ] + urlpatterns

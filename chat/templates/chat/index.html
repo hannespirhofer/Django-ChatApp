@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Index</title>
+  </head>
+  <body>
+    <h1>Hallo {{ request.user.first_name }} von App!</h1>
+    <span>{{ content }}</span>
+
+    <script>
+      // Log specific parts of the request object
+      console.log("Request User:", "{{ request.user|escapejs }}");
+      console.log("Request Method:", "{{ request.method|escapejs }}");
+      console.log("Request Path:", "{{ request.path|escapejs }}");
+    </script>
+  </body>
+</html>
