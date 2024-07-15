@@ -9,8 +9,10 @@ notes/
 __pycache__
 db.sqlite3
 media
-**/migrations/*
+# Add all files and folders from every migrations folder except the __init__.py (This adds the migrations folder automatically)
+**/migrations/**
 !**/migrations/__init__.py
+
 
 # Backup files #
 *.bak

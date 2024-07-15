@@ -22,9 +22,10 @@ from chat.views import index as helloworld
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("chat/", helloworld),
+    path(route="chat/", view=helloworld, name="chat"),
 ]
 
+# This need to be set when inserting the debug toolbar as it uses the /__debug__/ path
 if settings.DEBUG:
     import debug_toolbar
 

@@ -25,9 +25,13 @@
       <header class="mdl-layout__header">
         <div class="mdl-layout__header-row">
           <!-- Title -->
-          <span class="mdl-layout-title"
-            >Welcome, {{ request.user.first_name }}</span
-          >
+          <span class="mdl-layout-title">
+            {% if request.user.is_authenticated %}
+            	Hello {{ request.user.first_name }}
+            {% else %}
+				Hello Guest
+            {% endif %}
+          </span>
           <!-- Add spacer, to align navigation to the right -->
           <div class="mdl-layout-spacer"></div>
           <!-- Navigation. We hide it in small screens. -->
@@ -52,15 +56,23 @@
         <div class="page-content content">
           <!-- Your content goes here -->
           <h3>Welcome to the Chatroom!</h3>
-          <form action="#">
+
+          <form action="/chat/" method="post" id="chat-form">
+            {% csrf_token %}
             <div
               class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
             >
-              <input class="mdl-textfield__input" type="text" id="sample3" />
+              <input
+                class="mdl-textfield__input"
+                name="textmessage"
+                type="text"
+                id="textmessageid"
+              />
               <label class="mdl-textfield__label" for="sample3">Text...</label>
             </div>
             <button
               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+              type="submit"
             >
               Send Message
             </button>
@@ -68,12 +80,5 @@
         </div>
       </main>
     </div>
-
-    <script>
-      // Log specific parts of the request object
-      console.log("Request User:", "{{ request.user|escapejs }}");
-      console.log("Request Method:", "{{ request.method|escapejs }}");
-      console.log("Request Path:", "{{ request.path|escapejs }}");
-    </script>
   </body>
 </html>
