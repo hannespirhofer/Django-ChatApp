@@ -18,11 +18,13 @@ Including another URLconf
 from django.contrib import admin
 from django.conf import settings
 from django.urls import path, include
-from chat.views import index as helloworld
+from chat.views import index, login, register
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path(route="chat/", view=helloworld, name="chat"),
+    path(route="chat/", view=index, name="chat"),
+    path(route="login/", view=login, name="login"),
+    path(route="register/", view=register, name="register"),
 ]
 
 # This need to be set when inserting the debug toolbar as it uses the /__debug__/ path

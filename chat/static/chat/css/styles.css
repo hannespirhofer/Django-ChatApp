@@ -1,3 +1,19 @@
-.content {
-    padding: 3rem;
+li {
+    list-style-type: none;
+}
+
+.msg-date {
+    color: rgba(0, 0, 0, .4);
+    font-size: smaller;
+    margin-right: 8px;
+    width: 50px;
+    display: inline-block;
+}
+
+.msg-date::before {
+    content: "[";
+}
+
+.msg-date::after {
+    content: "]";
 }
