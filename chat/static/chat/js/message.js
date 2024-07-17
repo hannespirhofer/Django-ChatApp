@@ -2,6 +2,7 @@ const inputField = document.getElementById('textmessageid');
 const sendButton = document.getElementById('sendbutton');
 const messageList = document.getElementById('messagelist');
 const errormessageField = document.getElementById('errormessage');
+const inputForm = document.getElementById('chat-form');
 
 sendButton.disabled = true;
 
@@ -87,5 +88,11 @@ function createFormData(message) {
 
 inputField.addEventListener("input", toggleButtonState);
 
-window.addEventListener("online", () => { errormessageField.hidden = true; })
-window.addEventListener("offline", () => { errormessageField.hidden = false; })
+window.addEventListener("online", () => {
+    inputForm.hidden = false;
+    errormessageField.hidden = true;
+})
+window.addEventListener("offline", () => {
+    inputForm.hidden = true;
+    errormessageField.hidden = false;
+})

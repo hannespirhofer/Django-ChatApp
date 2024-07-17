@@ -17,13 +17,13 @@ Including another URLconf
 
 from django.contrib import admin
 from django.conf import settings
-from django.views.generic import RedirectView
 from django.urls import path, include
-from chat.views import index, login, register, logout
+from chat.views import index, login, register, logout, chat_detail
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path(route="chat/", view=index, name="chat"),
+    path(route="chat/<int:chatid>/", view=chat_detail, name="chat_detail"),
     path(route="login/", view=login, name="login"),
     path(route="logout/", view=logout, name="logout"),
     path(route="register/", view=register, name="register"),

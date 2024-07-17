@@ -4,8 +4,7 @@ from django.contrib.auth import authenticate, logout as auth_logout, login as au
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import redirect, render
-from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404, redirect, render
 from chat.models import Message, Chat
 
 
@@ -33,6 +32,11 @@ def index(request):
     )
 
 
+def chat_detail(request, chatid):
+    chat_instance = get_object_or_404(Chat, id=chatid)
+    return render(request, "chat/login.html", {"chat_id": chatid})
+
+
 # /login/
 def login(request):
     error_message = None
@@ -42,7 +46,7 @@ def login(request):
         username = request.POST.get("username")
         password = request.POST.get("password")
         user = authenticate(request, username=username, password=password)
-        if user is not None:
+        if user:
             auth_login(request, user)
             print(f"Welcome {user.first_name}")
             if next_url_param:
@@ -65,6 +69,7 @@ def register(request):
         username = request.POST.get("username")
         firstname = request.POST.get("firstname")
         password = request.POST.get("password")
+        user = None
 
         if User.objects.filter(username=username).exists():
             return render(
@@ -74,19 +79,22 @@ def register(request):
             )
 
         if password == "123456789":
+            # hashes the passwor d internally so it doesnt need to be done
             user = User.objects.create_superuser(
                 username=username,
                 first_name=firstname,
                 password=password,
                 email="test@test.com",
             )
+
         else:
-            user, created = User.objects.get_or_create(
-                username=username, first_name=firstname, password=password
-            )
+            # requires password hashing / otherwise authentication fails -> user will be created
+            user = User.objects.create(username=username, first_name=firstname)
+            user.set_password(password)
+            user.save()
 
         user = authenticate(request, username=username, password=password)
-        if user is not None:
+        if user:
             auth_login(request, user)
             print(f"Welcome {user.first_name}")
             return redirect("chat")
