@@ -14,15 +14,13 @@ from chat.models import Message, Chat
 def index(request):
     if request.method == "POST" and request.POST.get("textmessage") is not "":
         msg = request.POST.get("textmessage")
-        myChat = Chat.objects.get(id=1)
+        myChat, created = Chat.objects.get_or_create(id=1)
         message = Message.objects.create(
             text=msg, chat=myChat, author=request.user, receiver=request.user
         )
-
         serialized_message = serializers.serialize("json", [message])
         parsed_json = json.loads(serialized_message)
         single_message = parsed_json[0]
-
         modified_serialized_message = json.dumps(single_message)
         print(f"{msg} added to the db.")
         return JsonResponse(modified_serialized_message, safe=False)

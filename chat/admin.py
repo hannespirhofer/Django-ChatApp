@@ -9,6 +9,11 @@ class MessageAdmin(admin.ModelAdmin):
     search_fields = ["text"]
 
 
+class ChatAdmin(admin.ModelAdmin):
+    fields = ["name"]
+    list_display = ["name", "id"]
+
+
 # Register your models here.
 admin.site.register(Message, MessageAdmin)
-admin.site.register(Chat)
+admin.site.register(Chat, ChatAdmin)
