@@ -65,6 +65,14 @@ def register(request):
         username = request.POST.get("username")
         firstname = request.POST.get("firstname")
         password = request.POST.get("password")
+
+        if User.objects.filter(username=username).exists():
+            return render(
+                request,
+                "chat/register.html",
+                context={"error_message": "Username already exist. Try another"},
+            )
+
         if password == "123456789":
             user = User.objects.create_superuser(
                 username=username,
@@ -73,7 +81,7 @@ def register(request):
                 email="test@test.com",
             )
         else:
-            User.objects.create_user(
+            user, created = User.objects.get_or_create(
                 username=username, first_name=firstname, password=password
             )
 
