@@ -2,11 +2,19 @@ li {
     list-style-type: none;
 }
 
+li.grey {
+    color: rgba(0, 0, 0, .4);
+}
+
+li.red {
+    color: red;
+}
+
 .msg-date {
     color: rgba(0, 0, 0, .4);
     font-size: smaller;
     margin-right: 8px;
-    width: 50px;
+    min-width: 70px;
     display: inline-block;
 }
 
@@ -16,4 +24,8 @@ li {
 
 .msg-date::after {
     content: "]";
+}
+
+#errormessage {
+    color: red;
 }

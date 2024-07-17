@@ -1,7 +1,9 @@
-from django.contrib.auth import authenticate, login as auth_login
+import json
+from django.core import serializers
+from django.contrib.auth import authenticate, logout as auth_logout, login as auth_login
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from chat.models import Message, Chat
@@ -13,13 +15,19 @@ def index(request):
     if request.method == "POST" and request.POST.get("textmessage") is not "":
         msg = request.POST.get("textmessage")
         myChat = Chat.objects.get(id=1)
-        Message.objects.create(
+        message = Message.objects.create(
             text=msg, chat=myChat, author=request.user, receiver=request.user
         )
-        print(f"{msg} added to the db.")
-        return redirect("chat")
 
-    chatMessages = Message.objects.filter(chat__id=1)
+        serialized_message = serializers.serialize("json", [message])
+        parsed_json = json.loads(serialized_message)
+        single_message = parsed_json[0]
+
+        modified_serialized_message = json.dumps(single_message)
+        print(f"{msg} added to the db.")
+        return JsonResponse(modified_serialized_message, safe=False)
+
+    chatMessages = Message.objects.filter(chat__id=1).order_by("created_at")
     return render(
         request,
         "chat/index.html",
@@ -78,3 +86,8 @@ def register(request):
             return redirect("chat")
 
     return render(request, "chat/register.html")
+
+
+def logout(request):
+    auth_logout(request)
+    return redirect("login")

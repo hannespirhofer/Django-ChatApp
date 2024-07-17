@@ -1,25 +1,24 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block content %}
-
-{% block extra_styles %}
+{% block extra_head %}
   <link
   rel="stylesheet"
   type="text/css"
   href="{% static 'chat/css/styles.css' %}"
   />
-{% endblock extra_styles %}
+{% endblock extra_head %}
 
+{% block content %}
 <div>
-  <ul>
+  <ul id="messagelist">
     {% for msg in messages %}
-      <li><b><span class="msg-date">{{ msg.created_at|date:"l" }}</span>{{ msg.author.first_name }}:</b> <i>{{ msg.text }}</i></li>
+      <li><b><span class="msg-date">{{ msg.created_at|date:"D d M" }}</span>{{ msg.author.first_name }}:</b> <i>{{ msg.text }}</i></li>
     {% endfor %}
   </ul>
 </div>
 
-<form action="/chat/" method="post" id="chat-form">
+<form onsubmit="onSubmit(event); return false" id="chat-form">
   {% csrf_token %}
   <div
     class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
@@ -35,9 +34,21 @@
   <button
     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
     type="submit"
+    id="sendbutton"
   >
     Send Message
   </button>
 </form>
+
+<div id="errormessage" hidden>Your internet connection is offline. You cannot chat.</div>
 {% endblock %}
+
+{% block extra_scripts %}
+  <script src="{% static 'chat/js/message.js' %}"></script>
+  <script>
+    const firstName = '{{ request.user.first_name }}'
+    const username = '{{ request.user.username }}'
+    const csrftoken = '{{ csrf_token }}'
+  </script>
+{% endblock extra_scripts %}
 

@@ -1,4 +1,10 @@
 {% extends "base.html" %}
+
+{% load static %}
+{% block extra_head %}
+<script src="{% static 'chat/js/login.js' %}"></script>
+{% endblock extra_head %}
+
 {% block content %}
 <p>Please log in to join the chatroom or <a href="/register">Register here</a></p>
 <form action="{% url 'login' %}{% if next %}?next={{ next }}{% endif %}" method="post">
@@ -10,7 +16,7 @@
     id="username"
     type="text"
     />
-    <label class="mdl-textfield__label" for="sample3">Text</label>
+    <label class="mdl-textfield__label" for="sample3">Username</label>
 </div>
 <br>
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -33,28 +39,4 @@
     {{ error_message }}
 {% endif %}
 </form>
-
-{% block extra_scripts %}
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const usernameField = document.getElementById("username");
-        const passwordField = document.getElementById("password");
-        const loginButton = document.getElementById("submit");
-
-        function toggleButtonState() {
-            if (usernameField.value.trim() && passwordField.value.trim()) {
-                loginButton.disabled = false;
-            } else {
-                loginButton.disabled = true;
-            }
-        }
-
-        usernameField.addEventListener("input", toggleButtonState);
-        passwordField.addEventListener("input", toggleButtonState);
-
-        //Initial check in case there are prefilled values from the browser
-        toggleButtonState();
-    });
-</script>
-{% endblock %}
 {% endblock %}
